@@ -2,23 +2,22 @@ static_resources:
   listeners:
   - address:
       socket_address: { address: 127.0.0.1, port_value: 10000 }
-    filters:
-    - name: http_connection_manager
-      type: read
-      config:
-        codec_type: auto
-        stat_prefix: ingress_http
-        route_config:
-          virtual_hosts:
-          - name: local_service
-            domains: ["*"]
-            routes:
-            - prefix: "/"
-              timeout_ms: 0
-              host_rewrite: www.google.com
-              cluster: service_google
-        filters:
-        - { type: decoder, name: router, config: {} }
+    filter_chains:
+    - filters:
+      - name: http_connection_manager
+        type: read
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - prefix: "/"
+                timeout_ms: 0
+                host_rewrite: www.google.com
+                cluster: service_google
 
 admin:
   access_log_path: /tmp/admin_access.log
