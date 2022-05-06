@@ -7,9 +7,9 @@ static_resources:
       - name: http_connection_manager
         type: read
         config:
-          codec_type: auto
           stat_prefix: ingress_http
           route_config:
+            name: local_route
             virtual_hosts:
             - name: local_service
               domains: ["*"]
@@ -18,17 +18,20 @@ static_resources:
                 timeout_ms: 0
                 host_rewrite: www.google.com
                 cluster: service_google
+          http_filters:
+          - name: envoy.router
 
 admin:
   access_log_path: /tmp/admin_access.log
   address: 
-    socket_address: { address: 127.0.0.1, port_value: 10000 }
+    socket_address: { address: 127.0.0.1, port_value: 9901 }
 
 cluster_manager:
   clusters:
   - name: service_google
     connect_timeout_ms: 250
+    dns_lookup_family: V4_ONLY
     type: logical_dns
     lb_type: round_robin
-    hosts: [{ url: tcp://google.com:443 }]
-    ssl_context: { sni: www.google.com }
+    hosts: [{ socket_address: { address: google.com, port_value: 443 }}] 
+    tls_context: { sni: www.google.com }
