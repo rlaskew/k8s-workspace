@@ -1,6 +1,7 @@
 static_resources:
   listeners:
-  - address: tcp://0.0.0.0:10000
+  - address:
+      socket_address: { address: 127.0.0.1, port_value: 10000 }
     filters:
     - name: http_connection_manager
       type: read
@@ -21,7 +22,8 @@ static_resources:
 
 admin:
   access_log_path: /tmp/admin_access.log
-  address: tcp://0.0.0.0:9901
+  address: 
+    socket_address: { address: 127.0.0.1, port_value: 10000 }
 
 cluster_manager:
   clusters:
