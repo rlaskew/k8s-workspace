@@ -1,5 +1,5 @@
 listeners:
-- address: tcp://127.0.0.1:10000
+- address: tcp://0.0.0.0:10000
   filters:
   - name: http_connection_manager
     type: read
@@ -20,7 +20,7 @@ listeners:
 
 admin:
   access_log_path: /tmp/admin_access.log
-  address: tcp://127.0.0.1:9901
+  address: tcp://0.0.0.0:9901
 
 cluster_manager:
   clusters:
